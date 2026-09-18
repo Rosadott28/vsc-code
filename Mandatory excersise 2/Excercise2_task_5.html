@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Weather forecast for Landvik</h2>
+    <div id="weatherList"></div>
+
+    <script>
+
+        loadData();
+
+        async function loadData(){
+            const url = "https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=58.34&lon=8.52";
+
+            const response = await fetch(url);
+            const data = await response.json();
+            const forecast = data.properties.timeseries; //denne er lista med alle tidspunktene vi har fått via api.
+
+            const now = new Date();
+            const todayAt12 = new Date();
+            todayAt12.setUTCHours(12, 0, 0, 0);
+
+            let startTime = todayAt12;
+
+            if (now > todayAt12){
+                startTime = new Date(todayAt12);
+                startTime.setUTCDate(startTime.getUTCDate()+1); //legger til en dag/hopper til dagen etterpå
+            }
+
+            const noonForecasts = forecast.filter(function(forecast) { //funksjonen sjekker om værmeldingen skal være med i den nye listen med kravene i funskjonen
+
+                const forecastTime = new Date(forecast.time); 
+
+                return forecast.time.includes("T12:00:00Z") //sjekker om klokken 12
+                    && forecastTime >= startTime; //passer på å ikke fp med gamle værmeldinger
+
+            });
+
+            const sevenDays = noonForecasts.slice(0,7) //de første 7 elementen i listen
+
+            const weatherList = document.getElementById("weatherList");
+
+            sevenDays.forEach(function(forecast){
+
+                let temperature = forecast.data.instant.details.air_temperature;
+                let windSpeed = forecast.data.instant.details.wind_speed;
+                let windDirection = forecast.data.instant.details.wind_from_direction; //lokasjonen til dataen er på denne plassen
+
+                let date = new Date(forecast.time);
+                let dateText = date.toLocaleDateString();
+
+                let symbol = forecast.data.next_12_hours.summary.symbol_code; //denne koden henter info fra json fil som allerede har funnet passende ikon til været
+
+                let iconURL = "weathericons/" + symbol + ".png";
+
+                weatherList.innerHTML += `
+                    <div class="weather">
+                        <img src="${iconURL}">
+                        <div>
+                            <h3>${dateText}</h3>
+                            <p>Temperature: ${temperature}°C</p>
+                            <p>Wind speed: ${windSpeed} m/s</p>
+                            <p>Wind direction: ${windDirection}°</p>
+                        </div>
+                    </div>
+                `;
+
+                    console.log(
+    forecast.time,
+    temperature,
+    symbol
+);
+
+
+            });
+
+
+            console.log(data);
+
+        }
+
+    </script>
+    <style>
+
+        #weatherList{
+            width: 500px;
+        }
+
+        .weather {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+
+            padding: 15px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .weather img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain; /*cover /contain?*/
+        }
+
+        .weather h3 {
+            margin: 0 0 8px 0; 
+        }
+        .weather p {
+            margin: 3px 0; 
+        }
+
+
+
+    </style>
+</body>
+</html>

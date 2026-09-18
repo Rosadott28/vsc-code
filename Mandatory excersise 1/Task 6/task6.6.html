@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <span>Name: </span>
+    <input id="nameIn" type="text">
+    <br>
+    <br>
+    <span>Phone: </span>
+    <input id= "phoneIn" type="text"> 
+    <button id="click2">Delete this person?</button>
+    <br>
+    <br>
+    <button id="click">Add Person</button>
+    <div id="text"></div>
+    
+
+    <script>
+
+        let nameIn = document.getElementById('nameIn');
+        let phoneIn = document.getElementById('phoneIn');
+        let button = document.getElementById('click');
+        let text = document.getElementById('text');
+        let deleteButton = document.getElementById('click2');
+
+        let array = [];
+
+        button.addEventListener('click', function(evt){
+
+            let name = nameIn.value;
+            let phone = phoneIn.value;
+
+            let person ={
+                name: name,
+                phone: phone
+            }
+
+            array.push(person);
+
+         
+            text.innerHTML += "<br>" + "Name: " + person.name + " <br> " + "Phone " + person.phone + "<br>" + "<hr>";
+          
+
+            console.log(array);
+        })
+
+        deleteButton.addEventListener('click', function(evt){
+
+        let phone = phoneIn.value;
+
+        let findPhone = array.findIndex(function(person) {
+        return person.phone === phone;
+    });
+
+        if (findPhone !== -1) {
+        array.splice(findPhone, 1);
+        showList();
+
+        }
+        });
+
+    function showList() {
+    text.innerHTML = "";
+
+    for (let person of array) {
+        text.innerHTML += "<br>Name: " + person.name + "<br>Phone: " + person.phone + "<br><hr>";
+    }
+}
+
+
+// splice (hvor, hvor mange)
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <canvas id="cnv" width="500" height="500"></canvas>
+    <br>
+    <input type="range" id="radius">
+    <input type="color" id="color">
+
+    <script>
+        
+        const inpRadius = document.getElementById('radius');
+        const inpColor = document.getElementById('color');
+        const cnv = document.getElementById('cnv');
+        const ctx = cnv.getContext("2d");
+
+        let circles = [];
+
+         cnv.addEventListener('click', function(evt){
+            let radius = inpRadius.value;
+            let color = inpColor.value;
+            let x = evt.offsetX;
+            let y = evt.offsetY;
+            let foundCircle = false;
+
+           
+
+            let circle ={
+                Radius: radius,
+                Color: color,
+                Y: y,
+                X: x
+            } //objekt som skal inn i array
+
+            for (let i = circles.length - 1; i >= 0; i--) { 
+
+                let distance = Math.sqrt( //pytagoras, vi finner hvilket område sirkelen dekker.
+                (x - circles[i].X) ** 2 +
+                (y - circles[i].Y) ** 2
+                );
+
+                if (distance <= circles[i].Radius){ // bytte kun farge og radius hvis det er en annen sirkel der du trykket, vil beholde koordinater slik at den ikke bare erstatter sirkelen.
+                    circles[i].Radius = radius;
+                    circles[i].Color = color;
+
+                    foundCircle = true;
+                    break; // ikke kjør koden under
+                } 
+            }           
+
+                    if (foundCircle == false) { // hvis den ikke traff en annen sirkel, lag ny sirkel
+                    circles.push(circle);
+                    }
+
+           ctx.clearRect(0, 0, cnv.width, cnv.height); //fjerner alt på canvaset
+
+            circles.forEach(function(circle) { //tegner alle arrays på nytt med informasjonen som vi har lagret med hjelp av objekt.
+
+                ctx.beginPath();
+                ctx.arc(circle.X, circle.Y, circle.Radius, 0, 2 * Math.PI);
+
+                ctx.fillStyle = circle.Color;
+                ctx.fill();
+
+                ctx.stroke();
+        
+            
+            });
+         });
+
+// canvas med addevenetlistener for click. 
+// radius input type = range
+// farge input type= color
+
+    </script>
+</body>
+</html>

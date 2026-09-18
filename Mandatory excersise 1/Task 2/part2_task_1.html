@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 2 - oppg 1</title>
+</head>
+<body>
+    <span> Length: </span>
+    <input id="myInput" type="text"/>
+    <button id="inchButton">Convert to Inches</button>
+    <button id="cmButton">Convert to cm</button>
+    <h2 id="myText">The result...</h2>
+    <br>
+
+    <span> Temperature: </span>
+    <input id="myInput2" type="text"/>
+    <button id="celButton">Convert to Celsius</button>
+    <button id="farButton">Convert to Farenheit</button>
+    <h2 id="myText2">The result...</h2>
+
+        <script>
+            
+            let inchButton = document.getElementById('inchButton');
+            let cmButton = document.getElementById('cmButton');
+            let myInput = document.getElementById('myInput');
+            let myText = document .getElementById ('myText') ;
+
+            cmButton.addEventListener('click', function(evt) {
+               let inchIn = parseFloat(myInput.value);
+               let cmOut = inchIn * 2.54;
+                myText.innerHTML = inchIn + " inches is equal to " + cmOut + " cm";
+            });
+
+              inchButton.addEventListener('click', function(evt) {
+               let cmIn = parseFloat(myInput.value);
+               let inchOut = cmIn * 0.393701;
+                myText.innerHTML = cmIn + " cm is equal to " + inchOut + " inches";
+            });
+
+            // Temperature conversion
+
+            let celButton = document.getElementById('celButton');
+            let farButton = document.getElementById('farButton');
+            let myInput2 = document.getElementById('myInput2');
+            let myText2 = document .getElementById ('myText2') ;
+
+              celButton.addEventListener('click', function(evt) {
+               let farenheitIn = parseFloat(myInput2.value);
+               let celsiusOut = farenheitIn - 32 * 5/9;
+                myText2.innerHTML = farenheitIn + " farenheit is  " + celsiusOut.toFixed(2) + " celsius";
+            });
+
+              farButton.addEventListener('click', function(evt) {
+               let celsiusIn = parseFloat(myInput2.value);
+               let farenheitOut = celsiusIn * 9/5 + 32;
+                myText2.innerHTML = celsiusIn + " celsius is  " + farenheitOut.toFixed(2) + " farenheit";
+            });
+
+
+        </script>
+</body>
+</html>

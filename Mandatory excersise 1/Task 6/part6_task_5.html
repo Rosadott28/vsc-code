@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="input" type="text">
+    <button id= "click">click to confirm</button>
+    <h2 id="display"></h2>
+
+    <script>
+        let button = document.getElementById('click');
+        let input = document.getElementById('input');
+        let display = document.getElementById('display');
+
+        button.addEventListener('click', function(evt) {
+            
+        let inputValue = input.value; 
+         let newArray = inputValue.split(" ");
+         let Answer = newArray.length;
+            display.innerHTML = "det er " + Answer + " ord i setningen";
+            console.log(Answer);
+
+        
+        })
+
+
+
+    </script>
+
+</body>
+</html> 
